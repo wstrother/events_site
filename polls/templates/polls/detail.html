@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Polls App</title>
-  </head>
 
-    <h1>{{ question.question_text }}</h1>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'polls/css/style.css' %}">
+  </head>
 
     <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}
@@ -19,7 +21,7 @@
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
     </fieldset>
-    <input type="submit" value="Vote">
+    <input type="submit" value="Vote" class="btn btn-sm">
     </form>
 
 </html>
