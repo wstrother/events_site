@@ -19,4 +19,6 @@ def main():
 
 
 if __name__ == '__main__':
+    import subprocess
+    subprocess.Popen(['./tailwind', '-i', './polls/static/polls/input.css', '-o', './polls/static/polls/css/style.css', '--watch'])
     main()
