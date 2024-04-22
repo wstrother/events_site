@@ -1,37 +1,29 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.db.models import F
 from django.urls import reverse
+from django.views import generic
 
 from .models import Choice, Question
-
-# Create your views here.
-
-def index(request):
-    return render(request, "polls/index.html", {
-        "questions": Question.objects.order_by("-pub_date")[:5]
-    })
-
-
-def detail(request, question_id):
-    try:
-        context = {
-            "question": Question.objects.get(pk=question_id)
-        }
-    except Question.DoesNotExist:
-        raise Http404(f"No question found with id ${question_id}")
-    return render(request, "polls/detail.html", context)
     
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "questions"
 
-def results(request, question_id):
-    try:
-        context = {
-            "question": Question.objects.get(pk=question_id)
-        }
-    except Question.DoesNotExist:
-        raise Http404(f"No question found with id ${question_id}")
-    return render(request, "polls/results.html", context)
+    def get_queryset(self) -> QuerySet[Any]:
+        return Question.objects.order_by("-pub_date")[:5]
 
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 
 def vote(request, question_id):
