@@ -1,4 +1,5 @@
 tailwind.exe
+polls/static/polls/css/style.css
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
