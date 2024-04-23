@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Polls App</title>
+{% extends "polls/base.html" %}
 
-    {% load static %}
-
-    <link rel="stylesheet" href="{% static 'polls/css/style.css' %}">
-  </head>
-
+  {% block content %}
+  
     <form action="{% url 'polls:vote' question.id %}" method="post">
+    
     {% csrf_token %}
     <fieldset>
-        <legend><h1 class="text-blue-600">{{ question.question_text }}</h1></legend>
+        <legend>{{ question.question_text }}</legend>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         {% for choice in question.choice_set.all %}
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
@@ -24,4 +16,4 @@
     <input type="submit" value="Vote" class="btn btn-sm">
     </form>
 
-</html>
+  {% endblock content %}
