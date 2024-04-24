@@ -41,7 +41,8 @@ def results(request, question_id):
     choices = question.choice_set.all()
     
     return render(request, 'polls/components/poll_results.html', {
-        "choices": choices
+        "choices": choices,
+        "question": question
     })
 
 
@@ -52,7 +53,7 @@ def vote(request, question_id):
         raise Http404(f"No question found with id ${question_id}")
     
     try:
-        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+        selected_choice = question.choice_set.get(pk=request.POST["choices"])
     except (KeyError, Choice.DoesNotExist):
         return render(request, "polls/detail.html", {
             "question": question,

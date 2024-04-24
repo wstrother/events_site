@@ -1,5 +1,7 @@
 <ul>
     {% for choice in choices %}
-        <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        <li>
+            {{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }} out of {{ question.get_vote_count }} ({{ choice.get_vote_share }}%)
+        </li>
     {% endfor %}
 </ul>
