@@ -1,5 +1,7 @@
 tailwind.exe
 polls/static/polls/css/style.css
+.vscode
+.vscode/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
