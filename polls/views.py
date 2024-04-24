@@ -6,6 +6,8 @@ from django.db.models import F
 from django.urls import reverse
 from django.views import generic
 
+from .forms import getVoteForm
+
 from .models import Choice, Question
     
 class IndexView(generic.ListView):
@@ -16,14 +18,35 @@ class IndexView(generic.ListView):
         return Question.objects.order_by("-pub_date")[:5]
 
 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = "polls/detail.html"
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404(f"No question found with id ${question_id}")
+    
+    choices = question.choice_set.all()
+    
+    return render(request, 'polls/detail.html', {
+        "question": question,
+        "form": getVoteForm(choices)()
+    })
 
 
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = "polls/results.html"
+def results(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404(f"No question found with id ${question_id}")
+    
+    choices = question.choice_set.all()
+    
+    return render(request, 'polls/components/poll_results.html', {
+        "choices": choices
+    })
+
+# class ResultsView(generic.DetailView):
+#     model = Question
+#     template_name = "polls/results.html"
 
 
 def vote(request, question_id):
@@ -42,4 +65,4 @@ def vote(request, question_id):
     
     selected_choice.votes = F("votes") + 1
     selected_choice.save()
-    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+    return HttpResponseRedirect(f"/polls/results/{question_id}")
