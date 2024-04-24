@@ -24,11 +24,11 @@ def detail(request, question_id):
     except Question.DoesNotExist:
         raise Http404(f"No question found with id ${question_id}")
     
-    choices = question.choice_set.all()
+    form = getVoteForm(question.choice_set.all())()
     
     return render(request, 'polls/detail.html', {
         "question": question,
-        "form": getVoteForm(choices)()
+        "form": form
     })
 
 
@@ -43,10 +43,6 @@ def results(request, question_id):
     return render(request, 'polls/components/poll_results.html', {
         "choices": choices
     })
-
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = "polls/results.html"
 
 
 def vote(request, question_id):
