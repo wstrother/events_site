@@ -1,7 +1,8 @@
 <ul>
     {% for choice in choices %}
-        <li>
-            {{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }} out of {{ question.get_vote_count }} ({{ choice.get_vote_share }}%)
-        </li>
+        <div>
+            <span>{{ choice.choice_text }}</span>
+            {% include 'polls/components/vote_meter.html' with votes=choice.votes percent=choice.get_vote_share %}
+        </div>
     {% endfor %}
 </ul>

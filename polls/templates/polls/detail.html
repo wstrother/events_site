@@ -1,10 +1,12 @@
 {% extends "polls/base.html" %}
 
+  {% load poll_tags %}
+
   {% block content %}
   
     <h1>{{ question.question_text }}</h1>
     <div>
-      {{ question.get_vote_count }}
+      {{ question.get_vote_count }} Vote{{ question.get_vote_count|pluralize }} so far...
     </div>
 
     <form id="vote-form"
@@ -17,10 +19,11 @@
     <fieldset class="flex flex-col">
       <legend>Cast your vote!</legend>
 
-      {% for choice in form.choices %}
-        <label for="{{ choice.id_for_label}}">
-          <span>{{ choice.tag }}</span>
-          <span>{{ choice.choice_label }}</span>
+      {% for choice_field, choice_item in form.choices|zip:question.choice_set.all %}
+        <label for="{{ choice_field.id_for_label}}">
+          <span>{{ choice_field.tag }}</span>
+          <span>{{ choice_field.choice_label }}</span>
+          {% include 'polls/components/vote_meter.html' with votes=choice_item.votes percent=choice_item.get_vote_share %}
         </label>
       {% endfor %}
 

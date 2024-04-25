@@ -1,0 +1,11 @@
+<div class="flex bg-red-500 relative overflow-hidden">
+    <span class="absolute z-10">
+        {{ votes }} vote{{ votes|pluralize }}
+    </span>
+    
+    <div class="flex bg-green-500"
+        style="width:{{ percent }}%; animation: grow-x 0.5s linear 0s 1 normal"
+        >
+            &nbsp;
+    </div>
+</div>

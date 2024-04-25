@@ -9,4 +9,14 @@
     h2 {
       @apply text-xl;
     }
+    
+  @keyframes grow-x {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
+
+}
