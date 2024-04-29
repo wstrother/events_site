@@ -7,9 +7,10 @@
 </div>
 
 <form id="vote-form"
-hx-post="{% url 'polls:vote' question.id %}"
-hx-swap="innerHTML settle:0ms"
-hx-target="#page-contents"
+  hx-post="{% url 'polls:vote' question.id %}"
+  hx-swap="innerHTML settle:0ms"
+  hx-target="#page-contents"
+  hx-push-url="true"
 >
 
 {% csrf_token %}

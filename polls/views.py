@@ -39,7 +39,9 @@ def results(request, question_id):
     
     form = getVoteForm(question.choice_set.all())()
     
-    return render(request, 'polls/detail.html', {
+    template_name = 'detail' if (request.headers.get('HX-Request')) else 'base_detail'    
+    
+    return render(request, f'polls/{template_name}.html', {
         "question": question,
         "form": form,
         "submitted": True
