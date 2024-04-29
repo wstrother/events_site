@@ -29,7 +29,7 @@
 
       <span>{{ choice_field.choice_label }}</span>
 
-      {% include 'polls/components/vote_meter.html' with choice=choice_item loading=loading %}
+      {% include 'polls/components/vote_meter.html' with choice=choice_item %}
     </label>
   {% endfor %}
 </fieldset>
