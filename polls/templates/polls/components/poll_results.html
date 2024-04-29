@@ -1,8 +1,0 @@
-<ul>
-    {% for choice in choices %}
-        <div>
-            <span>{{ choice.choice_text }}</span>
-            {% include 'polls/components/vote_meter.html' with choice=choice %}
-        </div>
-    {% endfor %}
-</ul>
