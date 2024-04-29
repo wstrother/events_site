@@ -6,7 +6,7 @@
         {{ choice.votes }} vote{{ choice.votes|pluralize }}
     </span>
     
-    <div class="flex bg-green-500 vote-meter {% if not loaded %}loading{% endif %}"
+    <div class="flex bg-green-500 vote-meter {% if loading %}loading{% endif %}"
         style="width:{{ choice.get_vote_share }}%"
         id="vote-meter-inner-div-{{choice.id}}"
         >

@@ -5,8 +5,17 @@ from django.db.models import F
 from django.views import generic
 
 from .forms import getVoteForm
-
 from .models import Choice, Question
+
+
+def from_htmx(request) -> bool:
+    """"Checks if request is from HTMX"""
+    return bool(request.headers.get('HX-Request'))
+
+def get_template(request, name) -> str:
+    """Returns polls/base_{name}.html for templates if request is not from HTMX"""
+    return f"polls/{name if from_htmx(request) else f"base_{name}"}.html"
+
     
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -23,11 +32,14 @@ def detail(request, question_id):
         raise Http404(f"No question found with id ${question_id}")
     
     form = getVoteForm(question.choice_set.all())()
+    template = get_template(request, 'detail')
+    loading = not from_htmx(request)
     
-    return render(request, 'polls/base_detail.html', {
+    return render(request, template, {
         "question": question,
         "form": form,
-        "submitted": False
+        "submitted": False,
+        "loading": loading
     })
 
 
@@ -38,13 +50,14 @@ def results(request, question_id):
         raise Http404(f"No question found with id ${question_id}")
     
     form = getVoteForm(question.choice_set.all())()
+    template = get_template(request, 'detail')
+    loading = not from_htmx(request)
     
-    template_name = 'detail' if (request.headers.get('HX-Request')) else 'base_detail'    
-    
-    return render(request, f'polls/{template_name}.html', {
+    return render(request, template, {
         "question": question,
         "form": form,
-        "submitted": True
+        "submitted": True,
+        "loading": loading
     })
 
 

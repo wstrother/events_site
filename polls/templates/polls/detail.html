@@ -29,7 +29,7 @@
 
       <span>{{ choice_field.choice_label }}</span>
 
-      {% include 'polls/components/vote_meter.html' with choice=choice_item loaded=submitted %}
+      {% include 'polls/components/vote_meter.html' with choice=choice_item loading=loading %}
     </label>
   {% endfor %}
 </fieldset>
@@ -38,7 +38,9 @@
 {% if not submitted %}
   <input type="submit" value="Submit Vote" />
 {% else %}
-  <div><a href="{% url 'polls:detail' question.id %}">Vote again?</div>
+  <div><a href="{% url 'polls:detail' question.id %}"
+      hx-boost="true"
+    >Vote again?</div>
 {% endif %}
 
 </form>
