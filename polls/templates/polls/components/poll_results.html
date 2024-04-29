@@ -2,7 +2,7 @@
     {% for choice in choices %}
         <div>
             <span>{{ choice.choice_text }}</span>
-            {% include 'polls/components/vote_meter.html' with votes=choice.votes percent=choice.get_vote_share %}
+            {% include 'polls/components/vote_meter.html' with choice=choice %}
         </div>
     {% endfor %}
 </ul>

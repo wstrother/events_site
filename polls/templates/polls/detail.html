@@ -1,36 +1,43 @@
-{% extends "polls/base.html" %}
+{% load poll_tags %}
 
-  {% load poll_tags %}
+<h1>{{ question.question_text }}</h1>
 
-  {% block content %}
-  
-    <h1>{{ question.question_text }}</h1>
-    <div>
-      {{ question.get_vote_count }} Vote{{ question.get_vote_count|pluralize }} so far...
-    </div>
+<div>
+{{ question.get_vote_count }} Vote{{ question.get_vote_count|pluralize }} so far...
+</div>
 
-    <form id="vote-form"
-      hx-post="{% url 'polls:vote' question.id %}"
-      hx-swap="outerHTML"
-    >
-    
-    {% csrf_token %}
+<form id="vote-form"
+hx-post="{% url 'polls:vote' question.id %}"
+hx-swap="innerHTML"
+hx-target="#page-contents"
+>
 
-    <fieldset class="flex flex-col">
-      <legend>Cast your vote!</legend>
+{% csrf_token %}
 
-      {% for choice_field, choice_item in form.choices|zip:question.choice_set.all %}
-        <label for="{{ choice_field.id_for_label}}">
-          <span>{{ choice_field.tag }}</span>
-          <span>{{ choice_field.choice_label }}</span>
-          {% include 'polls/components/vote_meter.html' with votes=choice_item.votes percent=choice_item.get_vote_share %}
-        </label>
-      {% endfor %}
+<fieldset class="flex flex-col">
+  <legend>
+    {%if not submitted %}Cast your vote!{% else %}Your vote has been cast!{% endif %}
+  </legend>
 
-    </fieldset>
+  {% for choice_field, choice_item in form.choices|zip:question.choice_set.all %}
+    <label for="{{ choice_field.id_for_label}}">
+
+      {% if not submitted %}
+        <span>{{ choice_field.tag }}</span>
+      {% endif %}
+
+      <span>{{ choice_field.choice_label }}</span>
+
+      {% include 'polls/components/vote_meter.html' with choice=choice_item %}
+    </label>
+  {% endfor %}
+</fieldset>
 
 
-    <input type="submit" value="Submit Vote" />
-    </form>
+{% if not submitted %}
+  <input type="submit" value="Submit Vote" />
+{% else %}
+  <div><a href="{% url 'polls:detail' question.id %}">Vote again?</div>
+{% endif %}
 
-  {% endblock content %}
+</form>

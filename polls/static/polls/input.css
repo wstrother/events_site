@@ -19,4 +19,8 @@
     }
   }
 
+  .vote-meter {
+    /* animation: grow-x 0.5s linear 0s 1 normal; */
+    transition: all 1s ease-in;
+  }
 }

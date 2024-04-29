@@ -21,4 +21,6 @@ class Choice(models.Model):
         return self.choice_text
     
     def get_vote_share(self) -> float:
+        if (self.votes == 0): return 0
+        
         return round(100 * (self.votes / self.question.get_vote_count()), 2)
