@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
-# from django.urls import reverse
 from django.views import generic
 
 from .forms import getVoteForm
@@ -12,9 +11,9 @@ def from_htmx(request) -> bool:
     """"Checks if request is from HTMX"""
     return bool(request.headers.get('HX-Request'))
 
-def get_template(request, name) -> str:
+def get_template(name, hx=False) -> str:
     """Returns polls/base_{name}.html for templates if request is not from HTMX"""
-    return f"polls/{name if from_htmx(request) else f"base_{name}"}.html"
+    return f"polls/{name if hx else f"base_{name}"}.html"
 
     
 class IndexView(generic.ListView):
@@ -25,47 +24,31 @@ class IndexView(generic.ListView):
         return Question.objects.order_by("-pub_date")[:5]
 
 
-def detail(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404(f"No question found with id ${question_id}")
+def get_vote_form_view(request, question_id, context={}):
+    question = get_object_or_404(Question, pk=question_id)
+    hx = from_htmx(request)
+    template = get_template('detail', hx=hx)
     
-    form = getVoteForm(question.choice_set.all())()
-    template = get_template(request, 'detail')
-    loading = not from_htmx(request)
-    
-    return render(request, template, {
+    _context = {
+        "form": getVoteForm(question)(),
         "question": question,
-        "form": form,
-        "submitted": False,
-        "loading": loading
-    })
+        "loading": not hx,
+    }
+    _context.update(context)
+    
+    return render(request, template, _context)
+
+
+def detail(request, question_id):
+    return get_vote_form_view(request, question_id)
 
 
 def results(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404(f"No question found with id ${question_id}")
-    
-    form = getVoteForm(question.choice_set.all())()
-    template = get_template(request, 'detail')
-    loading = not from_htmx(request)
-    
-    return render(request, template, {
-        "question": question,
-        "form": form,
-        "submitted": True,
-        "loading": loading
-    })
+    return get_vote_form_view(request, question_id, {"submitted": True})
 
 
 def vote(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404(f"No question found with id ${question_id}")
+    question = get_object_or_404(Question, pk=question_id)
     
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choices"])
@@ -78,7 +61,3 @@ def vote(request, question_id):
     selected_choice.votes = F("votes") + 1
     selected_choice.save()
     return HttpResponseRedirect(f"/polls/results/{question_id}")
-
-
-def test_htmx(request):
-    return HttpResponse('Test response')

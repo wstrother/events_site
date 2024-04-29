@@ -8,6 +8,4 @@ urlpatterns = [
     path("results/<int:question_id>", views.results, name="results"),
     path("vote/<int:question_id>", views.vote, name="vote"),
     
-    
-    path("test", views.test_htmx, name="test")
 ]

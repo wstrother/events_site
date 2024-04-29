@@ -1,7 +1,7 @@
 from django import forms
 
-def getVoteForm(choice_set):
-    choice_set = [(c.id, c.choice_text) for c in choice_set]
+def getVoteForm(question):    
+    choice_set = [(c.id, c.choice_text) for c in question.choice_set.all()]
     
     class VoteForm(forms.Form):
         template_name = 'polls/components/forms/vote_form.html'
