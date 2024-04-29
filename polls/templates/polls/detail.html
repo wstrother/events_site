@@ -8,7 +8,7 @@
 
 <form id="vote-form"
 hx-post="{% url 'polls:vote' question.id %}"
-hx-swap="innerHTML"
+hx-swap="innerHTML settle:0ms"
 hx-target="#page-contents"
 >
 
@@ -28,7 +28,7 @@ hx-target="#page-contents"
 
       <span>{{ choice_field.choice_label }}</span>
 
-      {% include 'polls/components/vote_meter.html' with choice=choice_item %}
+      {% include 'polls/components/vote_meter.html' with choice=choice_item loaded=submitted %}
     </label>
   {% endfor %}
 </fieldset>

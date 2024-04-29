@@ -65,16 +65,5 @@ def vote(request, question_id):
     return HttpResponseRedirect(f"/polls/results/{question_id}")
 
 
-def vote_meter(request, choice_id):
-    try:
-        choice = Choice.objects.get(pk=choice_id)
-    except Question.DoesNotExist:
-        raise Http404(f"No choice found with id ${choice_id}")
-    
-    return render(request, "polls/components/vote_meter.html", {
-        "choice": choice
-    })
-
-
 def test_htmx(request):
     return HttpResponse('Test response')
