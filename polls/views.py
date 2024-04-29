@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
 from django.views import generic
 
-from .forms import getVoteForm
 from .models import Choice, Question
 
 
@@ -30,7 +29,6 @@ def get_vote_form_view(request, question_id, context={}):
     template = get_template('detail', hx=hx)
     
     _context = {
-        "form": getVoteForm(question)(),
         "question": question,
         "loading": not hx,
     }
