@@ -1,7 +1,9 @@
-<h1>{{ question.question_text }}</h1>
+<div class="flex flex-row justify-between items-end mb-4 pb-1">
+  <h1>{{ question.question_text }}</h1>
 
-<div>
-{{ question.get_vote_count }} Vote{{ question.get_vote_count|pluralize }} so far...
+  <div>
+  {{ question.get_vote_count }} Vote{{ question.get_vote_count|pluralize }} so far...
+  </div>
 </div>
 
 <form id="vote-form"
@@ -13,18 +15,20 @@
 
 {% csrf_token %}
 
-<fieldset class="flex flex-col">
-  <legend>
+<fieldset class="flex flex-col border-[2px] border-slate-600 p-1 gap-4 rounded-sm py-4">
+  <legend class="bg-slate-600 text-gray-400 w-3/4 mx-auto text-lg font-medium text-center rounded-sm">
     {%if not submitted %}Cast your vote!{% else %}Your vote has been cast!{% endif %}
   </legend>
 
   {% for choice in question.choice_set.all %}
-    <label for="id_choices_{{forloop.counter}}">
+    <label for="id_choices_{{forloop.counter}}" class="grid grid-cols-[1fr_3fr_75%] gap-4">
 
       {% if not submitted %}
-        <span>
-        <input type="radio" name="choices" value="{{choice.id}}" id="id_choices_{{forloop.counter}}" required />
-        </span>
+        <input type="radio" name="choices" value="{{choice.id}}" id="id_choices_{{forloop.counter}}" 
+          class="accent-slate-500 border-slate-500 h-3/4 my-auto rounded-md"
+          required />
+        {% else %}
+        <span>&nbsp;</span>
       {% endif %}
 
       <span>{{ choice.choice_text }}</span>

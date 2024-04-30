@@ -1,12 +1,12 @@
-<div class="flex bg-red-500 relative overflow-hidden"
+<div class="flex bg-rose-900 relative overflow-hidden rounded-md border border-gray-500"
     id="vote-meter-div-{{choice.id}}"
     >
 
-    <span class="absolute z-10">
+    <span class="absolute z-10 text-gray-200 mx-1">
         {{ choice.votes }} vote{{ choice.votes|pluralize }}
     </span>
     
-    <div class="flex bg-green-500 vote-meter {% if loading %}loading{% endif %}"
+    <div class="flex bg-emerald-700 vote-meter {% if loading %}loading{% endif %}"
         style="width:{{ choice.get_vote_share }}%"
         id="vote-meter-inner-div-{{choice.id}}"
         >
