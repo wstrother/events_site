@@ -1,11 +1,14 @@
 {% extends "polls/base.html" %}
 
 {% block content %}
+    <h1>Active Polls</h1>
 
   {% if questions %}
-      <ul>
+      <ul class="mt-4">
       {% for question in questions %}
-          <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        <li class="mb-2 ml-2">
+            <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+        </li>
       {% endfor %}
       </ul>
   {% else %}

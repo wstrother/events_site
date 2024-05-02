@@ -16,7 +16,7 @@
 {% csrf_token %}
 
 <fieldset class="flex flex-col border-[2px] border-slate-600 p-1 gap-4 rounded-sm py-4">
-  <legend class="bg-slate-600 text-gray-400 w-3/4 mx-auto text-lg font-medium text-center rounded-sm">
+  <legend class="badge w-3/4">
     {%if not submitted %}Cast your vote!{% else %}Your vote has been cast!{% endif %}
   </legend>
 
@@ -39,12 +39,23 @@
 </fieldset>
 
 
-{% if not submitted %}
-  <input type="submit" value="Submit Vote" />
-{% else %}
-  <div><a href="{% url 'polls:detail' question.id %}"
+<div class="mt-2 flex flex-row justify-between">
+  <div>
+  {% if not submitted %}
+    <input type="submit" value="Submit Vote" class="btn px-2"/>
+    {% else %}
+    &nbsp;
+  {% endif %}
+  </div>
+
+  <div>
+  {% if submitted %}
+    <a href="{% url 'polls:detail' question.id %}"
       hx-boost="true"
-    >Vote again?</div>
-{% endif %}
+      class="btn px-2"
+      >Vote again?</a>
+  {% endif %}
+  </div>
+</div>
 
 </form>

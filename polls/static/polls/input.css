@@ -3,13 +3,36 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-      @apply text-2xl;
-    }
-    h2 {
-      @apply text-xl;
-    }
-     
+  .badge {
+    @apply bg-slate-600 text-gray-400 mx-auto text-lg font-medium text-center rounded-sm;
+  }
+
+  .btn {
+    @apply badge cursor-pointer;
+  }
+
+  .btn:hover {
+    @apply bg-slate-500;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  li {
+    @apply text-xl;
+  }
+  a {
+    @apply text-gray-700 font-medium;
+  }
+  a:hover:not(.btn) {
+    @apply text-gray-600 underline;
+  }
+
+  
+  /* component animations    */
   @keyframes grow-x {
     from {
       transform: translateX(-100%);
